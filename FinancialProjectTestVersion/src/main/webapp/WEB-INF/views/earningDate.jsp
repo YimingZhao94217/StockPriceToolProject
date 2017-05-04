@@ -73,16 +73,16 @@ div.selectMonthDiv {
 	<div class="selectMonthDiv">
 		<c:set var="ban">${ban}</c:set>
 		<c:choose>
-			<c:when test="${ban == 'banLast'}">${currentYear}-${currentMonth+1}<a
+			<c:when test="${ban == 'banLast'}">${currentTimeFormat}<a
 					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
 			</c:when>
 			<c:when test="${ban == 'banNext'}">
 				<a
-					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>${currentYear}-${currentMonth+1}</c:when>
+					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>${currentTimeFormat}</c:when>
 			<c:otherwise>
 				<a
 					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>
-	${currentYear}-${currentMonth+1}
+	${currentTimeFormat}
 				<a
 					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
 			</c:otherwise>

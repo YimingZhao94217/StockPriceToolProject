@@ -1,6 +1,8 @@
 package com.financial.stockapp;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -215,7 +217,8 @@ public class EarningDateController {
 		request.setAttribute("calendar", rev);
 		request.setAttribute("currentMonth", month);
 		request.setAttribute("currentYear", year);
-
+		DateFormat df = new SimpleDateFormat("yyyy-MM");
+		request.setAttribute("currentTimeFormat", df.format(calendar.getTime()));
 		return new ModelAndView("earningDate");
 	}
 
