@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
 </head>
 <body>
 <p>Stock comparison page</p>
@@ -20,5 +21,6 @@
 <li>${record.timeSlot}</li>
 </c:forEach>
 </ul>
+
 </body>
 </html>
