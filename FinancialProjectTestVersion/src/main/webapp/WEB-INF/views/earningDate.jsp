@@ -12,13 +12,17 @@ table.calendarTable {
 	border-style: solid;
 	width: 900px;
 	border-color: LightGrey;
+	border-width: 2px;
 }
 
 th.titleTD {
 	border-style: solid;
 	border-color: LightGrey;
+	border-width: 2px;
 }
-
+td{
+border-width: 1px;
+}
 td.dateTD {
 	border-style: solid;
 	background-color: Black;

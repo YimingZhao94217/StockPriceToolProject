@@ -6,7 +6,11 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,14 +37,8 @@ public class SingleStockPage {
 	@RequestMapping(value = "singleStockPage.htm", method = RequestMethod.GET)
 	public ModelAndView doService(HttpServletRequest request) throws IOException {
 		System.out.println("----------get into servlet");
-		ArrayList<Stock> stockList = StockDao.getInstance().getStockList();
-		ArrayList<Stock> tenStock = new ArrayList<Stock>();
-		for (int i = 0; i < 20; i++) {
-			tenStock.add(stockList.get(i));
-		}
+		ArrayList<Stock> tenStock = StockDao.getInstance().get20MoreStocks(0);
 		request.setAttribute("stockList", tenStock);
-		System.out.println("No. of stock: " + stockList.size());
-		// request.setAttribute("test", stockList.get(0).getSymbol());
 		// stockDao.closeSession();
 		return new ModelAndView("singleStockPage");
 	}
@@ -50,26 +48,32 @@ public class SingleStockPage {
 		String userInput = request.getParameter("userInput");
 		List<JSONObject> stockArr = new ArrayList<JSONObject>();
 		int count = 0;
-		ArrayList<Stock> stockList = StockDao.getInstance().getStockList();
-		for (Stock s : stockList) {
-			if (s.getSymbol().toLowerCase().startsWith(userInput.toLowerCase())) {
+		List<Stock>result = StockDao.getInstance().searchStock(userInput.toUpperCase());
+		
+		// sort result
+		HashMap<Integer, List<Stock>>map = new HashMap<Integer, List<Stock>>();
+		for(Stock s: result){
+			int index = s.getSymbol().indexOf(userInput.toUpperCase());
+			if(map.containsKey(index)){
+				map.get(index).add(s);
+			}else{
+				List<Stock>list = new ArrayList<Stock>();
+				list.add(s);
+				map.put(index, list);
+			}
+		}
+		Object[] keys = map.keySet().toArray();
+		Arrays.sort(keys);
+		
+		// add to json arr
+		for(int i = 0; i < keys.length; i++){
+			List<Stock>list = map.get(keys[i]);
+			for(Stock s: list){
 				putStockIntoRev(stockArr, s);
 				count++;
 			}
-			if (count > 9)
-				break;
 		}
-		if (count < 10) {
-			for (Stock s : stockList) {
-				if (!s.getSymbol().toLowerCase().startsWith(userInput.toLowerCase())
-						&& s.getSymbol().toLowerCase().contains(userInput.toLowerCase())) {
-					putStockIntoRev(stockArr, s);
-					count++;
-				}
-				if (count > 9)
-					break;
-			}
-		}
+		
 		JSONObject stockJSON = new JSONObject();
 		stockJSON.put("stocks", stockArr);
 		stockJSON.put("count", count);
@@ -84,11 +88,15 @@ public class SingleStockPage {
 	public void doShowMoreService(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		List<JSONObject> stockArr = new ArrayList<JSONObject>();
 		int showed = Integer.parseInt(request.getParameter("showed"));
-		ArrayList<Stock> stockList = StockDao.getInstance().getStockList();
-		for (int i = 0; i < 20; i++) {
-			putStockIntoRev(stockArr, stockList.get(showed + i));
+//		ArrayList<Stock> stockList = StockDao.getInstance().getStockList();
+//		for (int i = 0; i < 20; i++) {
+//			putStockIntoRev(stockArr, stockList.get(showed + i));
+//		}
+		ArrayList<Stock> moreStocks = StockDao.getInstance().get20MoreStocks(showed);
+		for(Stock s: moreStocks){
+			putStockIntoRev(stockArr, s);
 		}
-		showed += 20;
+//		showed += 20;
 		JSONObject stockJSON = new JSONObject();
 		stockJSON.put("stocks", stockArr);
 		stockJSON.put("count", stockArr.size());

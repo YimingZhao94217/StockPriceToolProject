@@ -50,13 +50,30 @@ public class StockDao {
 		}
 	}
 
+	public ArrayList<Stock> get20MoreStocks(int showed) {
+		try {
+			if (session == null)
+				session = sf.openSession();
+			String hql = "from Stock";
+			Query query = session.createQuery(hql);
+			query.setFirstResult(showed);
+			query.setMaxResults(20);
+			ArrayList<Stock>rev = (ArrayList<Stock>) query.list();
+			// session.close();
+			return rev;
+		} catch (Exception ex) {
+			System.out.println("*** EXCEPTION: " + ex.getMessage());
+			return null;
+		}
+	}
+
 	public void closeSession() {
 		if (session != null)
 			session.close();
 	}
 
 	public Stock getStock(String ticker) {
-		Stock stock = new Stock();
+		Stock stock = null;
 		try {
 			if (session == null)
 				session = sf.openSession();
@@ -82,10 +99,37 @@ public class StockDao {
 		try {
 			if (session == null)
 				session = sf.openSession();
-			String hql = "from Stock stock where stock.earningDates.startDate between '"+formatter.format(startDate)+"' and '"+formatter.format(endDate)+"' or stock.earningDates.endDate between '"+formatter.format(startDate)+"' and '"+formatter.format(endDate)+"'";
+			String hql = "from Stock stock where stock.earningDates.startDate between '" + formatter.format(startDate)
+					+ "' and '" + formatter.format(endDate) + "' or stock.earningDates.endDate between '"
+					+ formatter.format(startDate) + "' and '" + formatter.format(endDate) + "'";
 			Query query = session.createQuery(hql);
 			List<Stock> rev = query.list();
 			return rev;
+		} catch (Exception ex) {
+			System.out.println("*** EXCEPTION: " + ex.getMessage());
+			return null;
+		}
+	}
+	
+	public List<Stock> searchStock(String input){
+		try {
+			if (session == null)
+				session = sf.openSession();
+			String hql = "from Stock stock where stock.symbol like '"+input+"%'";
+			Query query = session.createQuery(hql);
+			query.setFirstResult(0);
+			query.setMaxResults(10);
+			List<Stock>rev = query.list();
+			if(rev.size() >= 10)
+				return rev;
+			else{
+				hql = "from Stock stock where stock.symbol like '%" + input + "%'";
+				query = session.createQuery(hql);
+				query.setFirstResult(0);
+				query.setMaxResults(10);
+				rev = query.list();
+				return rev;
+			}
 		} catch (Exception ex) {
 			System.out.println("*** EXCEPTION: " + ex.getMessage());
 			return null;

@@ -229,7 +229,7 @@ a.stockListSymbol {
 		}
 
 		var url = "showMore.htm";
-		var sendStr = "showed=" + table.rows.length;
+		var sendStr = "showed=" + (table.rows.length - 1);
 		xmlhttp.open("POST", url, true);
 		xmlhttp.setRequestHeader("Content-type",
 				"application/x-www-form-urlencoded");
