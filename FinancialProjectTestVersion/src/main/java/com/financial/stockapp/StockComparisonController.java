@@ -39,7 +39,11 @@ public class StockComparisonController {
 		request.setAttribute("srh", srh);
 		
 		// get action from front end
-		List<Stock> selectedStocks = (List<Stock>) session.getAttribute("comparedStocks");
+		Object sessionStocks = session.getAttribute("comparedStocks");
+		List<Stock> selectedStocks = new ArrayList<Stock>();
+		if(sessionStocks != null){
+			selectedStocks = (List<Stock>) sessionStocks;
+		}
 		String addStockTicker = request.getParameter("addStock");
 		if (addStockTicker != null) {
 			selectedStocks.add(StockDao.getInstance().getStock(addStockTicker));
