@@ -14,23 +14,25 @@ import org.hibernate.cfg.Configuration;
 import com.financial.pojo.Stock;
 
 public class StockDao {
-	private static StockDao stockDao;
-	private Configuration cfg;
-	private SessionFactory sf;
+//	private static StockDao stockDao;
+	private static Configuration cfg;
+	private static SessionFactory sf;
 	private Session session;
 	private ArrayList<Stock> stockList;
 
-	public static synchronized StockDao getInstance() {
-		if (stockDao == null)
-			stockDao = new StockDao();
+//	public static synchronized StockDao getInstance() {
+//		if (stockDao == null)
+//			stockDao = new StockDao();
+//
+//		return stockDao;
+//	}
 
-		return stockDao;
-	}
-
-	private StockDao() {
-		cfg = new Configuration();
-		sf = cfg.configure("hibernate.cfg.xml").buildSessionFactory();
-
+	public StockDao() {
+		if(sf == null){
+			if(cfg == null)
+				cfg = new Configuration();
+			sf = cfg.configure("hibernate.cfg.xml").buildSessionFactory();
+		}	
 	}
 
 	public ArrayList<Stock> getStockList() {
@@ -120,16 +122,14 @@ public class StockDao {
 			query.setFirstResult(0);
 			query.setMaxResults(10);
 			List<Stock>rev = query.list();
-			if(rev.size() >= 10)
-				return rev;
-			else{
+			if(rev.size() < 10){
 				hql = "from Stock stock where stock.symbol like '%" + input + "%'";
 				query = session.createQuery(hql);
 				query.setFirstResult(0);
 				query.setMaxResults(10);
 				rev = query.list();
-				return rev;
 			}
+			return rev;
 		} catch (Exception ex) {
 			System.out.println("*** EXCEPTION: " + ex.getMessage());
 			return null;

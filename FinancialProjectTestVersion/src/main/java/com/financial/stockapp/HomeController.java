@@ -37,11 +37,13 @@ public class HomeController {
 //		String formattedDate = dateFormat.format(date);
 //		
 //		model.addAttribute("serverTime", formattedDate );
-		ArrayList<Stock> tenStock = StockDao.getInstance().get20MoreStocks(0);
+		StockDao stockDao = new StockDao();
+		ArrayList<Stock> tenStock = stockDao.get20MoreStocks(0);
 //		request.setAttribute("stockList", tenStock);
 		// stockDao.closeSession();
 		ModelAndView view = new ModelAndView("singleStockPage");
 		view.addObject("stockList", tenStock);
+		stockDao.closeSession();
 		return view;
 	}
 	

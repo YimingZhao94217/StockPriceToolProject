@@ -36,10 +36,11 @@ public class SingleStockPage {
 
 	@RequestMapping(value = "singleStockPage.htm", method = RequestMethod.GET)
 	public ModelAndView doService(HttpServletRequest request) throws IOException {
-		System.out.println("----------get into servlet");
-		ArrayList<Stock> tenStock = StockDao.getInstance().get20MoreStocks(0);
+//		System.out.println("----------get into servlet");
+		StockDao stockDao = new StockDao();
+		ArrayList<Stock> tenStock = stockDao.get20MoreStocks(0);
 		request.setAttribute("stockList", tenStock);
-		// stockDao.closeSession();
+		stockDao.closeSession();
 		return new ModelAndView("singleStockPage");
 	}
 
@@ -48,7 +49,8 @@ public class SingleStockPage {
 		String userInput = request.getParameter("userInput");
 		List<JSONObject> stockArr = new ArrayList<JSONObject>();
 		int count = 0;
-		List<Stock>result = StockDao.getInstance().searchStock(userInput.toUpperCase());
+		StockDao stockDao = new StockDao();
+		List<Stock>result = stockDao.searchStock(userInput.toUpperCase());
 		
 		// sort result
 		HashMap<Integer, List<Stock>>map = new HashMap<Integer, List<Stock>>();
@@ -82,6 +84,7 @@ public class SingleStockPage {
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json; charset=utf-8");
 		out.print(jsonString);
+		stockDao.closeSession();
 	}
 
 	@RequestMapping(value = "showMore.htm", method = RequestMethod.POST)
@@ -92,7 +95,8 @@ public class SingleStockPage {
 //		for (int i = 0; i < 20; i++) {
 //			putStockIntoRev(stockArr, stockList.get(showed + i));
 //		}
-		ArrayList<Stock> moreStocks = StockDao.getInstance().get20MoreStocks(showed);
+		StockDao stockDao = new StockDao();
+		ArrayList<Stock> moreStocks = stockDao.get20MoreStocks(showed);
 		for(Stock s: moreStocks){
 			putStockIntoRev(stockArr, s);
 		}
@@ -105,6 +109,7 @@ public class SingleStockPage {
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json; charset=utf-8");
 		out.print(jsonString);
+		stockDao.closeSession();
 	}
 
 	private void putStockIntoRev(List<JSONObject> stockArr, Stock s) {
@@ -119,7 +124,8 @@ public class SingleStockPage {
 	public ModelAndView doRadioService(HttpServletRequest request) throws IOException {
 		System.out.println("------------open ratio page...");
 		String ticker = request.getParameter("ticker");
-		Stock stock = StockDao.getInstance().getStock(ticker);
+		StockDao stockDao = new StockDao();
+		Stock stock = stockDao.getStock(ticker);
 		if (stock != null) {
 			request.setAttribute("stock", stock);
 			ArrayList<StockPrice> prices = stock.getSortedPrice();
@@ -165,8 +171,8 @@ public class SingleStockPage {
 				quarterList.add(formatter.format(quarters[i]));
 			}
 			request.setAttribute("quarterList", quarterList);
-			// stockDao.closeSession();
 		}
+		stockDao.closeSession();
 		return new ModelAndView("singleStockRatioPage");
 	}
 
@@ -176,7 +182,8 @@ public class SingleStockPage {
 		String ticker = request.getParameter("ticker");
 		String period = request.getParameter("period");
 		System.out.println(selectTime + ", " + ticker);
-		Stock stock = StockDao.getInstance().getStock(ticker);
+		StockDao stockDao = new StockDao();
+		Stock stock = stockDao.getStock(ticker);
 		if (stock != null) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
 			if (period.equals("year")) {
@@ -201,8 +208,8 @@ public class SingleStockPage {
 						isa = i;
 					}
 				}
-				System.out.println(bsa.getAccountsPayable());
-				System.out.println(isa.getTotalRevenue());
+//				System.out.println(bsa.getAccountsPayable());
+//				System.out.println(isa.getTotalRevenue());
 			} else {
 				// select quarter
 				BalanceSheetQuarter bsq = new BalanceSheetQuarter();
@@ -227,7 +234,10 @@ public class SingleStockPage {
 				System.out.println(isq.getCostOfRevenue());
 			}
 		}
-
+		// convert table to json format
+		stockDao.closeSession();
+		
+		
 		// Calendar c = Calendar.getInstance();
 		// if(selectTime.length() == 4){
 		// //select year
