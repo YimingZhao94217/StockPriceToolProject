@@ -121,6 +121,9 @@ a.openRatioA {
 div.selectMonthDiv {
 	float: right;
 }
+a.monthSelectionA{
+color:#00BFFF;
+}
 </style>
 </head>
 <body>
@@ -146,18 +149,18 @@ div.selectMonthDiv {
 		<div class="selectMonthDiv">
 			<c:set var="ban">${ban}</c:set>
 			<c:choose>
-				<c:when test="${ban == 'banLast'}">${currentTimeFormat}<a
-						href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
+				<c:when test="${ban == 'banLast'}">${currentTimeFormat}  <a
+						href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next" class="monthSelectionA">Next</a> 
 				</c:when>
 				<c:when test="${ban == 'banNext'}">
 					<a
-						href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>${currentTimeFormat}</c:when>
+						class="monthSelectionA" href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>  ${currentTimeFormat}</c:when>
 				<c:otherwise>
 					<a
-						href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>
-	${currentTimeFormat}
+						class="monthSelectionA" href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>  
+	${currentTimeFormat}  
 				<a
-						href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
+						class="monthSelectionA" href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
 				</c:otherwise>
 			</c:choose>
 
