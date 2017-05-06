@@ -9,6 +9,7 @@
 <style type="text/css">
 body{
 margin-left: 150px;
+margin-right: 200px;
 }
 nav.titleNav {
 	width: 950px;
