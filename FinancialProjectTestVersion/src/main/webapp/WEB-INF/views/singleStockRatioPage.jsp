@@ -8,6 +8,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+body{
+margin-left: 150px;
+}
+nav.titleNav {
+	width: 950px;
+	height: 40px;
+	margin: 10 auto;
+	background-color: #00BFFF;
+	padding: 0;
+}
+
+nav ul.titleUL {
+	float: left;
+	margin: 10px;
+	padding: 0 0 0 0;
+	width: 920px;
+	list-style: none;
+}
+
+nav ul li.titleLI {
+	display: inline;
+}
+
+nav ul li a.titleA {
+	width: 150px;
+	float: left;
+	padding: 11px 30px;
+	font-size: 14px;
+	text-align: center;
+	text-decoration: none; 
+	center right no-repeat;
+	color: #fff;
+	outline: none;
+}
+
+nav li a.titleA:hover {
+	color: #1E90FF;
+}
+
+td.titleTD {
+	text-align: center;
+}
 #stockTitleTd {
 	font-size: 20px;
 	padding-right: 5px;
@@ -150,6 +192,20 @@ tr.ratioTR {
 </script>
 </head>
 <body>
+<table width="100%" height="100%" cellspacing="0">
+		<tr height="10%">
+			<td class="titleTD">
+					<nav class="titleNav">
+						<ul class="titleUL">
+							<li class="titleLI"><a class="titleA" href="singleStockPage.htm" title="stockPage">Stock</a></li>
+							<li class="titleLI"><a class="titleA" href="earningDate.htm" title="earningDateCalendar">Earning Date Calendar</a></li>
+							<li class="titleLI"><a class="titleA" href="stockCompare.htm" title="stockCompare">Stock Comparison</a></li>
+							<li class="titleLI"><a class="titleA" href="stockFilter.htm" title="stockFilter">Stock Filter</a></li>
+						</ul>
+					</nav>
+				</td>
+		</tr>
+		</table>
 	<div id="title">
 		<table>
 			<tr>

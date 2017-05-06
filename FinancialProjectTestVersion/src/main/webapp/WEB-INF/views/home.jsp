@@ -4,7 +4,7 @@
 <head>
 <title>Home</title>
 <style type="text/css">
-nav {
+nav.titleNav {
 	width: 950px;
 	height: 40px;
 	margin: 10 auto;
@@ -12,7 +12,7 @@ nav {
 	padding: 0;
 }
 
-nav ul {
+nav ul.titleUL {
 	float: left;
 	margin: 10px;
 	padding: 0 0 0 0;
@@ -20,11 +20,11 @@ nav ul {
 	list-style: none;
 }
 
-nav ul li {
+nav ul li.titleLI {
 	display: inline;
 }
 
-nav ul li a {
+nav ul li a.titleA {
 	width: 150px;
 	float: left;
 	padding: 11px 30px;
@@ -36,17 +36,11 @@ nav ul li a {
 	outline: none;
 }
 
-nav li a:hover {
+nav li a.titleA:hover {
 	color: #1E90FF;
 }
 
-iframe {
-	width: 920px;
-	height: 100%;
-	border: 0px;
-}
-
-td {
+td.titleTD {
 	text-align: center;
 }
 </style>
@@ -54,23 +48,23 @@ td {
 <body>
 	<table width="100%" height="100%" cellspacing="0">
 		<tr height="10%">
-			<td><header>
-					<nav>
-						<ul>
-							<li><a href="singleStockPage.htm" title="stockPage"
+			<td class="titleTD"><header>
+					<nav class="titleNav">
+						<ul class="titleUL">
+							<li class="titleLI"><a class="titleA" href="singleStockPage.htm" title="stockPage"
 								target="main">Stock</a></li>
-							<li><a href="earningDate.htm" title="earningDateCalendar"
+							<li class="titleLI"><a class="titleA" href="earningDate.htm" title="earningDateCalendar"
 								target="main">Earning Date Calendar</a></li>
-							<li><a href="stockCompare.htm" title="stockCompare"
+							<li class="titleLI"><a class="titleA" href="stockCompare.htm" title="stockCompare"
 								target="main">Stock Comparison</a></li>
-							<li><a href="stockFilter.htm" title="stockFilter"
+							<li class="titleLI"><a class="titleA" href="stockFilter.htm" title="stockFilter"
 								target="main">Stock Filter</a></li>
 						</ul>
 					</nav>
 				</header></td>
 		</tr>
 		<tr height="90%">
-			<td><iframe name="main" src="singleStockPage.htm"></td>
+			<td class="titleTD"><iframe name="main" src="singleStockPage.htm"></td>
 		</tr>
 	</table>
 </body>

@@ -102,71 +102,41 @@ public class EarningDateController {
 				}
 			}
 
-//			if (currentEarnings != null) {
-				// add stock info in first column
+			// if (currentEarnings != null) {
+			// add stock info in first column
+			for (Stock s : currentEarnings) {
+				if (getDaysFromMilliseconds(s.getEarningDates().getStartDate().getTime()) <= getDaysFromMilliseconds(
+						cal.getTimeInMillis())
+						&& getDaysFromMilliseconds(
+								s.getEarningDates().getEndDate().getTime()) >= getDaysFromMilliseconds(
+										cal.getTimeInMillis())) {
+					ArrayList<TableCell> line = addRowToRev(rev);
+					TableCell tc = addTableCell(line);
+					tc.setType(TypeEnum.stock.toString());
+					tc.setValue(s.getSymbol());
+					int duration = 1
+							+ (int) (Math.min(getDaysFromMilliseconds(s.getEarningDates().getEndDate().getTime()),
+									getDaysFromMilliseconds(sat.getTimeInMillis()))
+									- Math.max(getDaysFromMilliseconds(s.getEarningDates().getStartDate().getTime()),
+											getDaysFromMilliseconds(cal.getTimeInMillis())));
+					tc.setDuration(duration * 3);
+				}
+			}
+			moveToNextDay(cal);
+			// add stock for other columns
+			for (int j = 1; j < 7; j++) {
 				for (Stock s : currentEarnings) {
 					if (getDaysFromMilliseconds(
-							s.getEarningDates().getStartDate().getTime()) <= getDaysFromMilliseconds(
-									cal.getTimeInMillis())
-							&& getDaysFromMilliseconds(
-									s.getEarningDates().getEndDate().getTime()) >= getDaysFromMilliseconds(
-											cal.getTimeInMillis())) {
-						ArrayList<TableCell> line = addRowToRev(rev);
-						TableCell tc = addTableCell(line);
-						tc.setType(TypeEnum.stock.toString());
-						tc.setValue(s.getSymbol());
-						int duration = 1 + (int) (Math.min(
-								getDaysFromMilliseconds(s.getEarningDates().getEndDate().getTime()),
-								getDaysFromMilliseconds(sat.getTimeInMillis()))
-								- Math.max(getDaysFromMilliseconds(s.getEarningDates().getStartDate().getTime()),
-										getDaysFromMilliseconds(cal.getTimeInMillis())));
-						tc.setDuration(duration * 3);
-					}
-				}
-				moveToNextDay(cal);
-				// add stock for other columns
-				for (int j = 1; j < 7; j++) {
-					for (Stock s : currentEarnings) {
-						if (getDaysFromMilliseconds(
-								s.getEarningDates().getStartDate().getTime()) == getDaysFromMilliseconds(
-										cal.getTimeInMillis())) {
-							boolean added = false;
-							for (int row = lastLineNum + 1; row < rev.size(); row++) { // current
-																						// week
-																						// group
-								int fill = getRestBlock(rev.get(row), j * 3);
-
-								if (fill >= 0) {
-									ArrayList<TableCell> line = rev.get(row);
-									for (int f = 0; f < fill; f++) {
-										TableCell tc = addTableCell(line);
-										if (f == 0 || f % 3 == 0) {
-											tc.setType(TypeEnum.basicLeft.toString());
-										} else if (f % 3 == 1) {
-											tc.setType(TypeEnum.basic.toString());
-										} else
-											tc.setType(TypeEnum.basicRight.toString()); // ??don't
-																						// need
-																						// right?
-									}
-									// add stock cell
-									TableCell tc = addTableCell(line);
-									tc.setType(TypeEnum.stock.toString());
-									tc.setValue(s.getSymbol());
-									int duration = 1 + (int) (Math.min(
-											getDaysFromMilliseconds(s.getEarningDates().getEndDate().getTime()),
-											getDaysFromMilliseconds(sat.getTimeInMillis()))
-											- getDaysFromMilliseconds(cal.getTimeInMillis()));
-									tc.setDuration(3 * duration);
-									added = true;
-									break;
-								}
-							}
-							if (!added) {
-								// add stock cell to new line
-								ArrayList<TableCell> line = addRowToRev(rev);
-								int fill = getRestBlock(line, j * 3);
-
+							s.getEarningDates().getStartDate().getTime()) == getDaysFromMilliseconds(
+									cal.getTimeInMillis())) {
+						boolean added = false;
+						for (int row = lastLineNum + 1; row < rev.size(); row++) { // current
+																					// week
+																					// group
+							int fill = getRestBlock(rev.get(row), j * 3);
+							
+							if (fill >= 0) {
+								ArrayList<TableCell> line = rev.get(row);
 								for (int f = 0; f < fill; f++) {
 									TableCell tc = addTableCell(line);
 									if (f == 0 || f % 3 == 0) {
@@ -178,6 +148,7 @@ public class EarningDateController {
 																					// need
 																					// right?
 								}
+								// add stock cell
 								TableCell tc = addTableCell(line);
 								tc.setType(TypeEnum.stock.toString());
 								tc.setValue(s.getSymbol());
@@ -186,25 +157,53 @@ public class EarningDateController {
 										getDaysFromMilliseconds(sat.getTimeInMillis()))
 										- getDaysFromMilliseconds(cal.getTimeInMillis()));
 								tc.setDuration(3 * duration);
+								added = true;
+								break;
 							}
 						}
-					}
-					moveToNextDay(cal);
-//				}
-				for (int row = lastLineNum + 1; row < rev.size(); row++) {
-					ArrayList<TableCell> line = rev.get(row);
-					int fill = getRestBlock(line, 21);
-					for (int f = 0; f < fill; f++) {
-						TableCell tc = addTableCell(line);
-						if (f == 0 || f % 3 == 0) {
-							tc.setType(TypeEnum.basicLeft.toString());
-						} else if (f % 3 == 1) {
-							tc.setType(TypeEnum.basic.toString());
-						} else
-							tc.setType(TypeEnum.basicRight.toString());
+						if (!added) {
+							// add stock cell to new line
+							ArrayList<TableCell> line = addRowToRev(rev);
+							int fill = getRestBlock(line, j * 3);
+
+							for (int f = 0; f < fill; f++) {
+								TableCell tc = addTableCell(line);
+								if (f == 0 || f % 3 == 0) {
+									tc.setType(TypeEnum.basicLeft.toString());
+								} else if (f % 3 == 1) {
+									tc.setType(TypeEnum.basic.toString());
+								} else
+									tc.setType(TypeEnum.basicRight.toString()); // ??don't
+																				// need
+																				// right?
+							}
+							TableCell tc = addTableCell(line);
+							tc.setType(TypeEnum.stock.toString());
+							tc.setValue(s.getSymbol());
+							int duration = 1 + (int) (Math.min(
+									getDaysFromMilliseconds(s.getEarningDates().getEndDate().getTime()),
+									getDaysFromMilliseconds(sat.getTimeInMillis()))
+									- getDaysFromMilliseconds(cal.getTimeInMillis()));
+							tc.setDuration(3 * duration);
+						}
 					}
 				}
+				moveToNextDay(cal);
 			}
+			for (int row = lastLineNum + 1; row < rev.size(); row++) {
+				ArrayList<TableCell> line = rev.get(row);
+				int fill = getRestBlock(line, 21);
+				for (int f = 0; f < fill; f++) {
+					TableCell tc = addTableCell(line);
+					if (f == 0 || f % 3 == 0) {
+						tc.setType(TypeEnum.basicLeft.toString());
+					} else if (f % 3 == 1) {
+						tc.setType(TypeEnum.basic.toString());
+					} else
+						tc.setType(TypeEnum.basicRight.toString());
+				}
+			}
+			// }
 			// add two line
 			int addLine = 3 - rev.size() + lastLineNum;
 			for (int row = 0; row < addLine; row++) {
