@@ -10,7 +10,7 @@ public class DateFormatUtil {
 		String dateStr = df.format(date);
 		int year = Integer.parseInt(dateStr.substring(0, 5));
 		int month = Integer.parseInt(dateStr.substring(5, 6));
-		if (month > 9)
+		if (month > 6)
 			return String.valueOf(year);
 		else
 			return String.valueOf(year - 1);
@@ -18,16 +18,17 @@ public class DateFormatUtil {
 	}
 	
 	public static String getFormattedYearSlot(String dateStr){
+		// format: yyyy-MM
 		int year = Integer.parseInt(dateStr.substring(0, 5));
 		int month = Integer.parseInt(dateStr.substring(5, 6));
-		if (month > 9)
+		if (month > 6)
 			return String.valueOf(year);
 		else
 			return String.valueOf(year - 1);
 	}
 
 	public static String getFormattedYearSlot(int year, int month) {
-		if (month > 9)
+		if (month > 6)
 			return String.valueOf(year);
 		else
 			return String.valueOf(year - 1);

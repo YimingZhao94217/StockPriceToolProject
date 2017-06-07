@@ -30,6 +30,10 @@ import com.financial.pojo.IncomeStateAnnual;
 import com.financial.pojo.IncomeStateQuarter;
 import com.financial.pojo.Stock;
 import com.financial.pojo.StockPrice;
+import com.financial.pojo.StockRatioRecord;
+import com.financial.pojo.StockRatioRecord.RatioEnum;
+import com.financial.util.DateFormatUtil;
+import com.financial.util.RatioCalculator;
 
 @Controller
 public class SingleStockPage {
@@ -171,6 +175,9 @@ public class SingleStockPage {
 				quarterList.add(formatter.format(quarters[i]));
 			}
 			request.setAttribute("quarterList", quarterList);
+			
+			
+			
 		}
 		stockDao.closeSession();
 		return new ModelAndView("singleStockRatioPage");
@@ -186,6 +193,8 @@ public class SingleStockPage {
 		Stock stock = stockDao.getStock(ticker);
 		if (stock != null) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+			StockRatioRecord srr = null;
+			HashMap<RatioEnum, Float> ratios = null;
 			if (period.equals("year")) {
 				// select year
 				BalanceSheetAnnual bsa = new BalanceSheetAnnual();
@@ -207,6 +216,10 @@ public class SingleStockPage {
 					if (formatter.format(i.getEndDate()).equals(selectTime)) {
 						isa = i;
 					}
+				}
+				if(bsa != null || cfa != null || isa != null){
+					srr = new StockRatioRecord(DateFormatUtil.getFormattedYearSlot(selectTime), bsa, cfa, isa);
+//					ratios = RatioCalculator.calculateAllRatios(bsa, cfa, isa);
 				}
 //				System.out.println(bsa.getAccountsPayable());
 //				System.out.println(isa.getTotalRevenue());
@@ -231,10 +244,14 @@ public class SingleStockPage {
 						isq = i;
 					}
 				}
-				System.out.println(isq.getCostOfRevenue());
+				if(bsq != null || isq != null || cfq != null){
+					srr = new StockRatioRecord(DateFormatUtil.getFormattedQuarterSlot(selectTime), bsq, cfq, isq);
+					ratios = RatioCalculator.calculateAllRatios(bsq, cfq, isq);
+				}
+//				System.out.println(isq.getCostOfRevenue());
 			}
 		}
-		// convert table to json format
+		// convert ratios/srr to json format
 		stockDao.closeSession();
 		
 		
