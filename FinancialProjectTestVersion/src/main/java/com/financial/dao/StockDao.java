@@ -132,6 +132,7 @@ public class StockDao {
 			return rev;
 		} catch (Exception ex) {
 			System.out.println("*** EXCEPTION: " + ex.getMessage());
+			System.out.println("testing exception");
 			return null;
 		}
 	}
