@@ -6,12 +6,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Stock - Ratio</title>
 <style type="text/css">
-body{
-margin-left: 150px;
-margin-right: 200px;
+body {
+	margin-left: 150px;
+	margin-right: 200px;
 }
+
 nav.titleNav {
 	width: 950px;
 	height: 40px;
@@ -38,8 +39,7 @@ nav ul li a.titleA {
 	padding: 11px 30px;
 	font-size: 14px;
 	text-align: center;
-	text-decoration: none; 
-	center right no-repeat;
+	text-decoration: none; center right no-repeat;
 	color: #fff;
 	outline: none;
 }
@@ -51,6 +51,7 @@ nav li a.titleA:hover {
 td.titleTD {
 	text-align: center;
 }
+
 #stockTitleTd {
 	font-size: 20px;
 	padding-right: 5px;
@@ -109,7 +110,7 @@ div.selectionDiv {
 	display: none
 }
 
-#ratioTable {
+.ratioTable {
 	border-collapse: collapse;
 	border-style: solid none;
 	border-width: 1px;
@@ -121,6 +122,11 @@ tr.ratioTR {
 	border-style: solid none solid none;
 	border-width: 1px;
 	border-color: LightGrey;
+}
+
+.titleTH {
+	text-align: center;
+	width: 150px;
 }
 </style>
 
@@ -170,6 +176,7 @@ tr.ratioTR {
 		}
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				// code here...
 
 			}
 		}
@@ -177,9 +184,11 @@ tr.ratioTR {
 		var ticker = document.getElementById("ticker").value;
 		var sendStr
 		if (yearSelect.style.display == "none") {
-			sendStr = "selection=" + selection + "&ticker=" + ticker + "&period=quarter";
-		}else{
-			sendStr = "selection=" + selection + "&ticker=" + ticker + "&period=year";
+			sendStr = "selection=" + selection + "&ticker=" + ticker
+					+ "&period=quarter";
+		} else {
+			sendStr = "selection=" + selection + "&ticker=" + ticker
+					+ "&period=year";
 		}
 		xmlhttp.open("POST", url, true);
 		xmlhttp.setRequestHeader("Content-type",
@@ -193,20 +202,22 @@ tr.ratioTR {
 </script>
 </head>
 <body>
-<table width="100%" height="100%" cellspacing="0">
+	<table width="100%" height="100%" cellspacing="0">
 		<tr height="10%">
-			<td class="titleTD">
-					<nav class="titleNav">
-						<ul class="titleUL">
-							<li class="titleLI"><a class="titleA" href="singleStockPage.htm" title="stockPage">Stock</a></li>
-							<li class="titleLI"><a class="titleA" href="earningDate.htm" title="earningDateCalendar">Earning Date Calendar</a></li>
-							<li class="titleLI"><a class="titleA" href="stockCompare.htm" title="stockCompare">Stock Comparison</a></li>
-							<li class="titleLI"><a class="titleA" href="stockFilter.htm" title="stockFilter">Stock Filter</a></li>
-						</ul>
-					</nav>
-				</td>
+			<td class="titleTD"><nav class="titleNav">
+				<ul class="titleUL">
+					<li class="titleLI"><a class="titleA"
+						href="singleStockPage.htm" title="stockPage">Stock</a></li>
+					<li class="titleLI"><a class="titleA" href="earningDate.htm"
+						title="earningDateCalendar">Earning Date Calendar</a></li>
+					<li class="titleLI"><a class="titleA" href="stockCompare.htm"
+						title="stockCompare">Stock Comparison</a></li>
+					<li class="titleLI"><a class="titleA" href="stockFilter.htm"
+						title="stockFilter">Stock Filter</a></li>
+				</ul>
+				</nav></td>
 		</tr>
-		</table>
+	</table>
 	<div id="title">
 		<table>
 			<tr>
@@ -257,13 +268,23 @@ tr.ratioTR {
 			</c:forEach>
 		</select>
 	</div>
-	<table id="ratioTable">
-		<tr class="ratioTR">
-			<td>ratios</td>
-		</tr>
-		<tr>
-			<td>ratios</td>
-		</tr>
-	</table>
+	<div id="annualRatioTable">
+		<table class="ratioTable">
+			<tr class="ratioTR">
+				<c:forEach var="annualTitle" items="${annaulTimeTitle}">
+					<th class="titleTH">${annualTitle}</th>
+				</c:forEach>
+			</tr>
+			<c:forEach var="annualRatioRow" items="${annaulRatioTable}">
+				<tr class="ratioTR">
+					<c:forEach var="annualItem" items="${annualRatioRow}">
+						<td>${annualItem}</td>
+					</c:forEach>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+	<div id="quarterRatioTable">
+	</div>
 </body>
 </html>

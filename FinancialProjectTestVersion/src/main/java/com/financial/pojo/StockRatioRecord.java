@@ -10,7 +10,8 @@ public class StockRatioRecord {
 	
 	// yiqun change here
 	public enum RatioEnum{
-		CurrentRatio,CashRatio;
+		CurrentRatio, AcidTestRatio,CashRatio, WorkingCapital,SalestoWorkingCapital,DebtRatio,DebtEquityRatio, DebttoTangibleNetWorthRatio, DaysSalesinReceivables,
+		DaysSalesinInventory, OperatingCycle, NetProfitMargin, TotalAssetTurnover, ReturnonAssets, OperatingIncomeMargin,ReturnonInvestment, TaxRate;
 	}
 
 	public StockRatioRecord(String timeSlot) {

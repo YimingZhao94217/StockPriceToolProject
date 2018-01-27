@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Stock</title>
+<title>Stock searching</title>
 <style type="text/css">
 body{
 margin-left: 150px;
