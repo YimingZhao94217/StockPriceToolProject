@@ -7,9 +7,17 @@
         <!-- <property name="show_sql">true</property>
         <property name="format_sql">true</property> -->
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        
+        <!--
+        <property name="hibernate.connection.url">jdbc:mysql://aarhpvt3asu3ei.cvbsp7fnl0iy.us-west-2.rds.amazonaws.com:3306/financialDataYahoo</property>
+        <property name="hibernate.connection.username">masterDB</property>
+        <property name="hibernate.connection.password">Ym646894</property>
+        -->
+        
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/financialDataYahoo</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">000000</property>
+       
         <property name="hibernate.connection.pool.size">20</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         

@@ -39,17 +39,27 @@ public class StockComparisonController {
 		request.setAttribute("srh", srh);
 		
 		// get action from front end
-		List<Stock> selectedStocks = (List<Stock>) session.getAttribute("comparedStocks");
+		Object sessionStocks = session.getAttribute("comparedStocks");
+		List<String> selectedStocks = new ArrayList<String>();
+		if(sessionStocks != null){
+			selectedStocks = (List<String>) sessionStocks;
+		}
 		String addStockTicker = request.getParameter("addStock");
 		if (addStockTicker != null) {
-			selectedStocks.add(StockDao.getInstance().getStock(addStockTicker));
+			selectedStocks.add(addStockTicker);
 			session.setAttribute("comparedStocks", selectedStocks);
 		}
-		
+		List<Stock>compareStockList = new ArrayList<Stock>();
+		StockDao stockDao = new StockDao();
+		for(String s: selectedStocks){
+			Stock stock = stockDao.getStock(s);
+			if(stock != null)
+				compareStockList.add(stock);
+		}
 		//get time slots
 		HashSet<String> yearSlotsSet = new HashSet<String>();
 		HashSet<String> quarterSlotsSet = new HashSet<String>();
-		for (Stock s : selectedStocks) {
+		for (Stock s : compareStockList) {
 			for (BalanceSheetAnnual bsa : s.getBalanceSheetAnnuals()) {
 				yearSlotsSet.add(DateFormatUtil.getFormattedYearSlot(bsa.getEndingDate()));
 			}
@@ -105,7 +115,7 @@ public class StockComparisonController {
 		
 		// calculate ratio
 		List<StockRatioHistory>ratioHis = new ArrayList<StockRatioHistory>();
-		for(Stock stock: selectedStocks){
+		for(Stock stock: compareStockList){
 			StockRatioHistory srhis = new StockRatioHistory(stock, yearSlotsArr, quarterSlotsArr);
 			srhis.sortBothRatioRecords();
 			ratioHis.add(srhis);
@@ -113,6 +123,7 @@ public class StockComparisonController {
 		
 		ModelAndView model = new ModelAndView("stockCompare");
 		model.addObject("ratioArr", ratioHis);
+		stockDao.closeSession();
 		return model;
 	}
 }

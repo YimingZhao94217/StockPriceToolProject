@@ -70,7 +70,8 @@ public class EarningDateController {
 		// calendar.set(Calendar.MONTH, 3);
 
 		// DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		ArrayList<Stock> currentEarnings = (ArrayList<Stock>) StockDao.getInstance().getCurrentEarnings(year, month);
+		StockDao stockDao = new StockDao();
+		ArrayList<Stock> currentEarnings = (ArrayList<Stock>) stockDao.getCurrentEarnings(year, month);
 		// for (Stock s : currentEarnings) {
 		// System.out.println(s.getSymbol() + ", " +
 		// df.format(s.getEarningDates().getStartDate()) + ", "
@@ -89,6 +90,7 @@ public class EarningDateController {
 			ArrayList<TableCell> firstLine = addRowToRev(rev);
 			Calendar sat = Calendar.getInstance(); // become Sat. after looping
 			sat.setTimeInMillis(cal.getTimeInMillis());
+			// add first line (contains date info)
 			for (int j = 0; j < 21; j++) {
 				TableCell tc = addTableCell(firstLine);
 				if (j == 0 || j % 3 == 0) {
@@ -101,6 +103,8 @@ public class EarningDateController {
 				}
 			}
 
+			// if (currentEarnings != null) {
+			// add stock info in first column
 			for (Stock s : currentEarnings) {
 				if (getDaysFromMilliseconds(s.getEarningDates().getStartDate().getTime()) <= getDaysFromMilliseconds(
 						cal.getTimeInMillis())
@@ -120,6 +124,7 @@ public class EarningDateController {
 				}
 			}
 			moveToNextDay(cal);
+			// add stock for other columns
 			for (int j = 1; j < 7; j++) {
 				for (Stock s : currentEarnings) {
 					if (getDaysFromMilliseconds(
@@ -130,7 +135,7 @@ public class EarningDateController {
 																					// week
 																					// group
 							int fill = getRestBlock(rev.get(row), j * 3);
-
+							
 							if (fill >= 0) {
 								ArrayList<TableCell> line = rev.get(row);
 								for (int f = 0; f < fill; f++) {
@@ -199,6 +204,7 @@ public class EarningDateController {
 						tc.setType(TypeEnum.basicRight.toString());
 				}
 			}
+			// }
 			// add two line
 			int addLine = 3 - rev.size() + lastLineNum;
 			for (int row = 0; row < addLine; row++) {
@@ -219,6 +225,7 @@ public class EarningDateController {
 		request.setAttribute("currentYear", year);
 		DateFormat df = new SimpleDateFormat("yyyy-MM");
 		request.setAttribute("currentTimeFormat", df.format(calendar.getTime()));
+		stockDao.closeSession();
 		return new ModelAndView("earningDate");
 	}
 

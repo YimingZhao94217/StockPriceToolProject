@@ -5,14 +5,64 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Earning Date Calendar</title>
 <style type="text/css">
+body {
+	margin-left: 150px;
+	margin-right: 200px;
+}
+
+nav.titleNav {
+	width: 950px;
+	height: 40px;
+	margin: 10 auto;
+	background-color: #00BFFF;
+	padding: 0;
+}
+
+nav ul.titleUL {
+	float: left;
+	margin: 10px;
+	padding: 0 0 0 0;
+	width: 920px;
+	list-style: none;
+}
+
+nav ul li.titleLI {
+	display: inline;
+}
+
+nav ul li a.titleA {
+	width: 150px;
+	float: left;
+	padding: 11px 30px;
+	font-size: 14px;
+	text-align: center;
+	text-decoration: none; center right no-repeat;
+	color: #fff;
+	outline: none;
+}
+
+nav li a.titleA:hover {
+	color: #1E90FF;
+}
+
+td.titleTD {
+	text-align: center;
+}
+
+#calendarTableDIV {
+	width:910px;
+	margin-left: 10px;
+}
+
 table.calendarTable {
 	border-collapse: collapse;
 	border-style: solid;
 	width: 900px;
 	border-color: LightGrey;
 	border-width: 2px;
+	text-align: center;
 }
 
 th.titleTD {
@@ -20,9 +70,11 @@ th.titleTD {
 	border-color: LightGrey;
 	border-width: 2px;
 }
-td{
-border-width: 1px;
+
+td {
+	border-width: 1px;
 }
+
 td.dateTD {
 	border-style: solid;
 	background-color: Black;
@@ -56,7 +108,6 @@ td.stockNameTD {
 	background-color: #00BFFF;
 	color: White;
 	border-color: LightGrey;
-	text-align: center;
 }
 
 tr.calendarRowTR {
@@ -70,30 +121,50 @@ a.openRatioA {
 div.selectMonthDiv {
 	float: right;
 }
+a.monthSelectionA{
+color:#00BFFF;
+}
 </style>
 </head>
 <body>
+	<table width="100%" height="100%" cellspacing="0">
+		<tr height="10%">
+			<td class="titleTD"><nav class="titleNav">
+				<ul class="titleUL">
+					<li class="titleLI"><a class="titleA"
+						href="singleStockPage.htm" title="stockPage">Stock</a></li>
+					<li class="titleLI"><a class="titleA" href="earningDate.htm"
+						title="earningDateCalendar">Earning Date Calendar</a></li>
+					<li class="titleLI"><a class="titleA" href="stockCompare.htm"
+						title="stockCompare">Stock Comparison</a></li>
+					<li class="titleLI"><a class="titleA" href="stockFilter.htm"
+						title="stockFilter">Stock Filter</a></li>
+				</ul>
+				</nav></td>
+		</tr>
+	</table>
 	<p>Earning date canlendar</p>
-	<div class="selectMonthDiv">
-		<c:set var="ban">${ban}</c:set>
-		<c:choose>
-			<c:when test="${ban == 'banLast'}">${currentTimeFormat}<a
-					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
-			</c:when>
-			<c:when test="${ban == 'banNext'}">
-				<a
-					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>${currentTimeFormat}</c:when>
-			<c:otherwise>
-				<a
-					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>
-	${currentTimeFormat}
-				<a
-					href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
-			</c:otherwise>
-		</c:choose>
 
-	</div>
-	<div>
+	<div id="calendarTableDIV">
+		<div class="selectMonthDiv">
+			<c:set var="ban">${ban}</c:set>
+			<c:choose>
+				<c:when test="${ban == 'banLast'}">${currentTimeFormat}  <a
+						href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next" class="monthSelectionA">Next</a> 
+				</c:when>
+				<c:when test="${ban == 'banNext'}">
+					<a
+						class="monthSelectionA" href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>  ${currentTimeFormat}</c:when>
+				<c:otherwise>
+					<a
+						class="monthSelectionA" href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=last">Last</a>  
+	${currentTimeFormat}  
+				<a
+						class="monthSelectionA" href="earningDate.htm?currentMonth=${currentMonth}&currentYear=${currentYear}&action=next">Next</a>
+				</c:otherwise>
+			</c:choose>
+
+		</div>
 		<table class="calendarTable">
 			<tr class="calendarRowTR">
 				<th colspan="3" class="titleTD">Sun</th>
