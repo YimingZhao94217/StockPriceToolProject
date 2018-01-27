@@ -8,6 +8,7 @@ public class DateFormatUtil {
 	public static String getFormattedYearSlot(Date date) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM");
 		String dateStr = df.format(date);
+		String s = "";
 		int year = Integer.parseInt(dateStr.substring(0, 5));
 		int month = Integer.parseInt(dateStr.substring(5, 6));
 		if (month > 6)
